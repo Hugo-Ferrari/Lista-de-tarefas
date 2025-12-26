@@ -9,8 +9,7 @@ type ListaProps = {
 
 export function Lista() {
   const [input, setInput] = useState<string>("")
-  const [itens, setItens] = useState<ListaProps[]>([]) // lista tipada de items
-
+  const [itens, setItens] = useState<ListaProps[]>([])
 
   const addItens = () => {
     if (input.trim() === "") return
@@ -18,65 +17,73 @@ export function Lista() {
     const novoItem: ListaProps = {
       id: Date.now(),
       text: input,
-      concluido: false // Todo item começa não concluído
+      concluido: false
     }
 
-    setItens([...itens, novoItem]) //adiciona um item novo sem alterar o anterior 
+    setItens([...itens, novoItem])
     setInput("")
   }
 
-  // Inverte o estado de apenas UM item específico
   const alternarConcluido = (id: number) => {
     setItens(itens.map(item =>
       item.id === id ? { ...item, concluido: !item.concluido } : item
     ))
   }
 
-  const Remover = (id: number) => { //remove os items cada um pelo seu id
+  const Remover = (id: number) => {
     setItens(itens.filter(item => item.id !== id))
   }
 
   return (
-    <div className="h-screen w-screen p-4 flex flex-col justify-center items-center bg-gray-100">
-      <div className="bg-white p-10 rounded-2xl shadow-lg w-full max-w-md">
+    // min-h-screen evita problemas com teclados mobile
+    <div className="min-h-screen w-full p-4 flex flex-col justify-center items-center bg-gray-100 font-sans">
+      
+      {/* Card principal: Ajustado para ser w-full (mobile) e max-w-md (desktop) */}
+      <div className="bg-white p-6 sm:p-10 rounded-2xl shadow-lg w-full max-w-md">
 
         <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">Minha Lista</h2>
 
-        <div className="flex gap-2 mb-6">
+        {/* Container do Input e Botão: 'w-full' e 'flex' garantem o alinhamento */}
+        <div className="flex gap-2 mb-6 w-full">
           <input
             type="text"
             value={input}
-            onChange={(e) => setInput(e.target.value)} //guarda o input para colocar na lista
+            onChange={(e) => setInput(e.target.value)}
             placeholder="O que precisa fazer?"
-            className="border-2 border-gray-200 p-2 rounded-lg flex-1 focus:border-blue-500 outline-none transition-colors text-black"
+            // 'flex-1' faz o input crescer e 'min-w-0' impede que ele quebre o layout mobile
+            className="border-2 border-gray-200 p-2 rounded-lg flex-1 min-w-0 focus:border-blue-500 outline-none transition-colors text-black text-base"
           />
           <button
-            onClick={addItens} //adiciona os itens para a lista 
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+            onClick={addItens}
+            // 'shrink-0' garante que o botão não diminua de tamanho
+            className="bg-blue-500 hover:bg-blue-600 active:scale-95 text-white px-4 py-2 rounded-lg font-medium transition-all shrink-0"
           >
-            Adicionar
+            Add
           </button>
         </div>
 
-        <ul className="space-y-3">
+        {/* Lista com scroll interno para não quebrar a tela se tiver muitos itens */}
+        <ul className="space-y-3 max-h-[400px] overflow-y-auto pr-1">
           {itens.map((item) => (
-            <li key={item.id} className="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-100">
-              <div className="flex items-center gap-3">
+            <li key={item.id} className="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-100 gap-2">
+              <div className="flex items-center gap-3 min-w-0">
                 <input
                   type="checkbox"
-                  checked={item.concluido} // Agora olha para o estado do ITEM (individual)
-                  onChange={() => alternarConcluido(item.id)} // Inverte apenas este item (iniidividual)
-                  className="w-5 h-5 accent-green-500 cursor-pointer"
+                  checked={item.concluido}
+                  onChange={() => alternarConcluido(item.id)}
+                  className="w-5 h-5 accent-green-500 cursor-pointer shrink-0"
                 />
 
-                <span className={`text-lg transition-all ${item.concluido ? 'line-through text-gray-400' : 'text-gray-700'}`}>
+                <span className={`text-base transition-all truncate ${
+                  item.concluido ? 'line-through text-gray-400' : 'text-gray-700'
+                }`}>
                   {item.text}
                 </span>
               </div>
 
               <button
-                onClick={() => Remover(item.id)} // remove o item por id,( individual)
-                className="text-red-400 hover:text-red-600 text-sm font-semibold transition-colors"
+                onClick={() => Remover(item.id)}
+                className="text-red-400 hover:text-red-600 active:text-red-800 text-sm font-semibold transition-colors shrink-0"
               >
                 Remover
               </button>
@@ -85,16 +92,17 @@ export function Lista() {
         </ul>
 
         {itens.length === 0 && (
-          <p className="text-gray-400 text-center mt-4">Sua lista está vazia.</p> // caso nn tenha nenhum item
-
+          <p className="text-gray-400 text-center mt-4 italic">Sua lista está vazia.</p>
         )}
-        <div className="flex justify-between w-full mb-4 text-sm font-medium py-5">
-        <p className="text-gray-600">
-          Concluídos: <span className="text-green-600"> 
-            {itens.filter(i => i.concluido).length} de {itens.length} {/*olha a quantidade total e avisa quantas tarefas já foram concluidas */}
-          </span>
-        </p>
-      </div>
+
+        {/* Rodapé informativo */}
+        <div className="flex justify-between w-full mt-6 pt-4 border-t border-gray-100 text-sm font-medium">
+          <p className="text-gray-600">
+            Concluídos: <span className="text-green-600"> 
+              {itens.filter(i => i.concluido).length} de {itens.length}
+            </span>
+          </p>
+        </div>
       </div>
       
     </div>
