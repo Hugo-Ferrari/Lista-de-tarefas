@@ -35,34 +35,34 @@ export function Lista() {
   }
 
   return (
-    // min-h-screen evita problemas com teclados mobile
+   
     <div className="min-h-screen w-full p-4 flex flex-col justify-center items-center bg-gray-100 font-sans">
       
-      {/* Card principal: Ajustado para ser w-full (mobile) e max-w-md (desktop) */}
+      
       <div className="bg-white p-6 sm:p-10 rounded-2xl shadow-lg w-full max-w-md">
 
         <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">Minha Lista</h2>
 
-        {/* Container do Input e Botão: 'w-full' e 'flex' garantem o alinhamento */}
+       
         <div className="flex gap-2 mb-6 w-full">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="O que precisa fazer?"
-            // 'flex-1' faz o input crescer e 'min-w-0' impede que ele quebre o layout mobile
+            
             className="border-2 border-gray-200 p-2 rounded-lg flex-1 min-w-0 focus:border-blue-500 outline-none transition-colors text-black text-base"
           />
           <button
             onClick={addItens}
-            // 'shrink-0' garante que o botão não diminua de tamanho
+           
             className="bg-blue-500 hover:bg-blue-600 active:scale-95 text-white px-4 py-2 rounded-lg font-medium transition-all shrink-0"
           >
-            Add
+            Adicionar
           </button>
         </div>
 
-        {/* Lista com scroll interno para não quebrar a tela se tiver muitos itens */}
+       
         <ul className="space-y-3 max-h-[400px] overflow-y-auto pr-1">
           {itens.map((item) => (
             <li key={item.id} className="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-100 gap-2">
@@ -95,7 +95,7 @@ export function Lista() {
           <p className="text-gray-400 text-center mt-4 italic">Sua lista está vazia.</p>
         )}
 
-        {/* Rodapé informativo */}
+        
         <div className="flex justify-between w-full mt-6 pt-4 border-t border-gray-100 text-sm font-medium">
           <p className="text-gray-600">
             Concluídos: <span className="text-green-600"> 
