@@ -1,11 +1,13 @@
 "use client"
 import { useEffect, useState } from "react"
 
+
 type ListaProps = {
     id: number
     text: string
     concluido: boolean
 }
+
 
 export function Lista() {
     const [input, setInput] = useState<string>("")
@@ -58,6 +60,10 @@ export function Lista() {
         setItens(itens.filter(item => item.id !== id)) 
     }
 
+    const editarItem = (id: number, novoTexto: string) => {
+        setItens(itens.map(item => item.id === id ? { ...item, text: novoTexto } : item))
+    }
+
     return (
 
         <div className="min-h-screen w-full p-4 flex flex-col justify-center items-center bg-gray-100 font-sans">
@@ -72,7 +78,7 @@ export function Lista() {
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         // Adicionando um atalho para facilitar o uso:
-                        onKeyDown={(e) => e.key === 'Enter' && addItens()}
+                        onKeyDown={(e) => e.key === 'Enter' && addItens()} //usuário possa apenas apertar "Enter" em vez de ter que clicar no botão sempre.
                         placeholder="O que precisa fazer?"
                         className="border-2 border-gray-200 p-2 rounded-lg flex-1 min-w-0 focus:border-blue-500 outline-none transition-colors text-black text-base"
                     />
@@ -84,14 +90,14 @@ export function Lista() {
                     </button>
                 </div>
 
-                <ul className="space-y-3 max-h-[400px] overflow-y-auto pr-1">
+                <ul className="space-y-3 max-h-[400px] ">
                     {itens.map((item) => (
                         <li key={item.id} className="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-100 gap-2">
                             <div className="flex items-center gap-3 min-w-0">
                                 <input
                                     type="checkbox"
                                     checked={item.concluido}
-                                    onChange={() => alternarConcluido(item.id)}
+                                    onChange={() => alternarConcluido(item.id)} 
                                     className="w-5 h-5 accent-green-500 cursor-pointer shrink-0"
                                 />
 
@@ -105,14 +111,14 @@ export function Lista() {
                                 onClick={() => Remover(item.id)}
                                 className="text-red-400 hover:text-red-600 active:text-red-800 text-sm font-semibold transition-colors shrink-0"
                             >
-                                {/* O comentário foi movido para dentro da função ou removido do JSX para evitar erros de renderização */}
                                 Remover
                             </button>
+                            
                         </li>
                     ))}
                 </ul>
 
-                {itens.length === 0 && (
+                {itens.length === 0 && ( //se os itens estiverem zerados, aparece "sua lista esta vazia"
                     <p className="text-gray-400 text-center mt-4 italic">Sua lista está vazia.</p>
                 )}
 
