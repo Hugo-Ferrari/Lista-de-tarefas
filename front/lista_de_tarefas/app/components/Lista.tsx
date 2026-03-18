@@ -72,7 +72,7 @@ export function Lista() {
 
     return (
         <div className="min-h-screen w-full p-4 flex flex-col justify-center items-center bg-gray-100 font-sans">
-            <div className="bg-white p-6 sm:p-10 rounded-2xl shadow-lg w-full max-w-md text-black">
+            <div className="bg-white p-6 sm:p-10  shadow-lg w-full max-w-md text-black">
                 
                 <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">Minha Lista</h2>
 
@@ -95,7 +95,7 @@ export function Lista() {
                 </div>
 
                 {/* lista de tarefas */}
-                <ul className="space-y-3 max-h-[400px] overflow-y-auto">
+                <ul className="space-y-3  overflow-y-auto">
                     {itens.map((item) => (
                         <li key={item.id} className="flex flex-col bg-gray-50 p-3 rounded-lg border border-gray-100 gap-2">
                             
